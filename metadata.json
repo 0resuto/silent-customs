@@ -1,6 +1,6 @@
 {
-  "name": "Lakeside Premium Estate",
-  "description": "Premium real estate landing page for a luxury lakeside house.",
+  "name": "Silent Customs",
+  "description": "Кастомные велосипедные рамы для эндуро и даунхилла.",
   "requestFramePermissions": [
     "geolocation"
   ]
