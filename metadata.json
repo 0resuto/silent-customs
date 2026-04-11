@@ -1,0 +1,7 @@
+{
+  "name": "Lakeside Premium Estate",
+  "description": "Premium real estate landing page for a luxury lakeside house.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

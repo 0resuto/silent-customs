@@ -1,16 +1,36 @@
-# React + Vite
+## Требования
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Node.js (рекомендуется v18 или выше)
 
-Currently, two official plugins are available:
+## Установка и запуск
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Установите зависимости:
+   ```bash
+   npm install
+   ```
 
-## React Compiler
+2. Создайте файл `.env` в корне проекта (рядом с `server.ts`) и заполните его необходимыми данными (см. раздел "Конфигурация").
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+3. Запустите проект в режиме разработки (с горячей перезагрузкой):
+   ```bash
+   npm run dev
+   ```
 
-## Expanding the ESLint configuration
+4. Для сборки и запуска в рабочей среде (production):
+   ```bash
+   npm run build
+   npm start
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Конфигурация (.env)
+
+Для управления контентом и интеграциями без изменения исходного кода используются переменные окружения. Пример содержимого файла `.env`:
+
+```env
+# Контактные данные в шапке и подвале
+PHONE="+7 (900) 000-00-00"
+PHONE_LINK="tel:+79000000000"
+EMAIL="example@email.com"
+
+# Основной домен (для генерации sitemap.xml, robots.txt и канонических ссылок)
+SITE_URL="https://your-domain.ru"

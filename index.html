@@ -1,13 +1,55 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>silent-customs</title>
+    
+    <title>Кастомные двухподвесные рамы | Проектирование и производство</title>
+    <meta name="description" content="Проектирование и производство кастомных двухподвесных велосипедных рам. Индивидуальная геометрия, кинематика, ЧПУ фрезеровка и сварка под ваш стиль." />
+    
+    <!-- Указания для роботов и цвет шторки в мобильных браузерах -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#1c1917" />
+    
+    <!-- Каноническая ссылка и предзагрузка главного баннера для PageSpeed -->
+    <link rel="canonical" href="__SITE_URL__/" />
+    <link rel="preload" href="/images/hero.webp" as="image" />
+
+    <link rel="icon" href="/favicon.ico" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Кастомные двухподвесные рамы Silent Customs" />
+    <meta property="og:description" content="Производство уникальных велосипедных рам на заказ. Индивидуальная геометрия, алюминий и карбон. Пожизненная гарантия." />
+    <meta property="og:image" content="__SITE_URL__/images/hero.jpg" />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Микроразметка Schema.org для производства -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Кастомная двухподвесная велосипедная рама",
+      "description": "Индивидуальное проектирование и производство велосипедных рам под заказ.",
+      "url": "__SITE_URL__",
+      "image": "__SITE_URL__/images/hero.webp",
+      "brand": {
+        "@type": "Brand",
+        "name": "Silent Customs"
+      }
+    }
+    </script>
+
+    <!-- Конфигурация из .env для подстановки в рантайме -->
+    <script>
+      window.APP_CONFIG = {
+        PHONE: "__PHONE__",
+        PHONE_LINK: "__PHONE_LINK__",
+        EMAIL: "__EMAIL__"
+      };
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
