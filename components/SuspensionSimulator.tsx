@@ -79,13 +79,18 @@ function computeKinematics(compressionPct: number) {
   return { ra, cs_sbm, rsp, rshp };
 }
 
+const m = (pt: { x: number; y: number }) => ({ x: pt.x, y: 400 - pt.y });
+
+const raTrajectoryPoints = Array.from({ length: 101 }, (_, i) => {
+  const res = computeKinematics(i);
+  return res ? `${m(res.ra).x},${m(res.ra).y}` : null;
+}).filter(Boolean).join(" ");
+
 const SuspensionSimulator = () => {
   const [compression, setCompression] = useState(0);
 
   const pts = computeKinematics(compression) || computeKinematics(0);
   if (!pts) return null;
-
-  const m = (pt: { x: number; y: number }) => ({ x: pt.x, y: 400 - pt.y });
 
   const bb = m(initPts.bb);
   const mp = m(initPts.mp);
@@ -145,6 +150,7 @@ const SuspensionSimulator = () => {
             <circle cx={ra.x} cy={ra.y} r={370} fill="none" stroke="#f1f1f5" strokeWidth="16" />
             <circle cx={ra.x} cy={ra.y} r={350} fill="none" stroke="#e4e4e7" strokeWidth="3" strokeDasharray="12 12" />
           </g>
+          <polyline points={raTrajectoryPoints} fill="none" stroke="#f97316" strokeWidth="4" strokeDasharray="6 6" opacity="0.4" strokeLinecap="round" strokeLinejoin="round" />
           <g className="drop-shadow-xl">
             <line x1={rshp.x} y1={rshp.y} x2={cs_sbm.x} y2={cs_sbm.y} stroke="#a1a1aa" strokeWidth="8" strokeLinecap="round" />
             <line x1={rshp.x} y1={rshp.y} x2={red_end.x} y2={red_end.y} stroke="#ef4444" strokeWidth="20" strokeLinecap="round" />

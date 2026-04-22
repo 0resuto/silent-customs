@@ -11,8 +11,6 @@ import {
   Waves, 
   Wind, 
   Settings, 
-  ChevronRight,
-  ChevronLeft,
   Menu,
   X,
   Phone,
@@ -20,7 +18,10 @@ import {
   LucideIcon
 } from "lucide-react";
 import { useState, ReactNode } from "react";
+import GallerySlider from "../components/GallerySlider";
 import SuspensionSimulator from "../components/SuspensionSimulator";
+import PrivacyModal from "../components/modals/PrivacyModal";
+import PlanModal from "../components/modals/PlanModal";
 
 const NavItem = ({ href, children }: { href: string; children: ReactNode }) => (
   <a 
@@ -37,10 +38,10 @@ const StatCard = ({ value, label, index }: { value: string; label: string; index
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: index * 0.1, duration: 0.5 }}
-    className="bg-surface-container-lowest p-8 rounded-lg border border-neutral-100/50"
+    className="bg-white/10 backdrop-blur-md p-6 lg:p-8 rounded-2xl border border-white/20 shadow-xl"
   >
-    <div className="text-4xl font-extrabold tracking-tighter mb-2">{value}</div>
-    <div className="text-sm font-medium text-on-surface-variant uppercase tracking-wider">{label}</div>
+    <div className="text-3xl lg:text-4xl font-extrabold tracking-tighter text-white mb-2">{value}</div>
+    <div className="text-xs lg:text-sm font-medium text-white/80 uppercase tracking-wider">{label}</div>
   </motion.div>
 );
 
@@ -83,206 +84,16 @@ const TechItem = ({ icon: Icon, text }: { icon: LucideIcon; text: string }) => (
   </motion.div>
 );
 
-const photos = [
-  {
-    src: "/images/alu-links.webp",
-    caption: "Фрезерованные линки подвески из цельного куска алюминия"
-  },
-  {
-    src: "/images/welded-seam.webp",
-    caption: "Сварные швы ручной работы, прошедшие термообработку"
-  },
-  {
-    src: "/images/front-carbon-frame.webp",
-    caption: "Карбоновый передний треугольник с индивидуальной укладкой слоев"
-  },
-  {
-    src: "/images/painted-frame.webp",
-    caption: "Кастомная покраска в любой цвет по каталогу RAL"
-  },
-  {
-    src: "/images/bike-test-on-trails.webp",
-    caption: "Готовый байк на нашей раме, покоряющий трейлы"
-  }
-];
-
-const GallerySlider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const next = () => setCurrentIndex((prev) => (prev + 1) % photos.length);
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length);
-
-  const handleDragEnd = (_: unknown, { offset }: { offset: { x: number } }) => {
-    if (offset.x < -50) {
-      next();
-    } else if (offset.x > 50) {
-      prev();
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-4 md:block">
-      <div className="relative w-full aspect-[3/4] md:aspect-auto md:h-[700px] rounded-3xl overflow-hidden bg-surface-container shadow-xl md:shadow-2xl">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.23, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 cursor-grab active:cursor-grabbing"
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.2}
-            onDragEnd={handleDragEnd}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={photos[currentIndex].src} 
-              alt={`Photo ${currentIndex + 1}`}
-              className="w-full h-full object-cover pointer-events-none"
-            />
-            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="hidden md:block absolute bottom-12 left-12 right-12 text-white"
-            >
-              <p className="text-2xl font-medium tracking-tight max-w-2xl leading-relaxed">
-                {photos[currentIndex].caption}
-              </p>
-              <div className="mt-6 flex items-center gap-4">
-                <span className="text-sm font-bold tracking-widest uppercase opacity-50">
-                  {String(currentIndex + 1).padStart(2, '0')} / {String(photos.length).padStart(2, '0')}
-                </span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Mobile Buttons */}
-        <div className="md:hidden absolute inset-y-0 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-          <button onClick={prev} className="pointer-events-auto w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/40 transition-all active:scale-90">
-            <ChevronLeft size={20} />
-          </button>
-          <button onClick={next} className="pointer-events-auto w-10 h-10 rounded-full bg-black/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/40 transition-all active:scale-90">
-            <ChevronRight size={20} />
-          </button>
-        </div>
-
-        {/* Desktop Buttons */}
-        <div className="hidden md:flex absolute bottom-12 right-12 gap-4 z-10">
-          <button onClick={prev} className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-90">
-            <ChevronLeft size={24} />
-          </button>
-          <button onClick={next} className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all active:scale-90">
-            <ChevronRight size={24} />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Description */}
-      <div className="md:hidden px-2 mt-2">
-        <p className="text-lg font-medium tracking-tight text-neutral-900 leading-relaxed">
-          {photos[currentIndex].caption}
-        </p>
-        <div className="mt-4 flex items-center gap-4">
-          <span className="text-sm font-bold tracking-widest uppercase text-neutral-400">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(photos.length).padStart(2, '0')}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PrivacyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl p-8 w-full max-w-2xl max-h-[80vh] overflow-y-auto relative text-left shadow-2xl"
-          >
-            <button onClick={onClose} className="absolute top-6 right-6 p-2 bg-neutral-100 rounded-full hover:bg-neutral-200 transition-colors text-black">
-              <X size={20} />
-            </button>
-            <h2 className="text-3xl font-bold tracking-tight mb-6 text-black">Политика конфиденциальности</h2>
-            <div className="space-y-4 text-sm text-neutral-600 leading-relaxed">
-              <p><strong>1. Общие положения</strong><br/>Настоящая политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006. №152-ФЗ «О персональных данных»...</p>
-              {/* Остальной текст модалки */}
-            </div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
-  );
-};
-
-const PlanModal = ({ src, onClose }: { src: string | null; onClose: () => void }) => {
-  const [isZoomed, setIsZoomed] = useState(false);
-
-  const handleClose = () => {
-    setIsZoomed(false);
-    onClose();
-  };
-
-  return (
-    <AnimatePresence>
-      {src && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={handleClose}>
-          <button onClick={handleClose} className="absolute top-4 right-4 md:top-6 md:right-6 z-[110] p-2 bg-neutral-800/50 hover:bg-neutral-800 backdrop-blur-md rounded-full transition-colors text-white">
-            <X size={24} />
-          </button>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl w-full max-w-6xl max-h-[90vh] overflow-auto shadow-2xl relative"
-          >
-            <div className={`p-4 md:p-8 w-full min-h-[50vh] flex ${isZoomed ? 'items-start justify-start' : 'items-center justify-center'}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src={src} 
-                alt="Blueprint Preview" 
-                onClick={() => setIsZoomed(!isZoomed)}
-                className={`h-auto object-contain transition-all duration-300 ${isZoomed ? 'w-[250%] md:w-[150%] max-w-none cursor-zoom-out' : 'w-full max-w-full cursor-zoom-in'}`} 
-              />
-            </div>
-          </motion.div>
-          <AnimatePresence>
-            {!isZoomed && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[110] bg-white/90 text-black text-sm px-5 py-2.5 rounded-full pointer-events-none backdrop-blur-md shadow-lg font-medium whitespace-nowrap"
-              >
-                Нажмите на чертеж для увеличения
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
-    </AnimatePresence>
-  );
-};
-
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const { scrollY } = useScroll();
-  const backgroundY = useTransform(scrollY, [0, 1000], [0, 500]);
-  const textY = useTransform(scrollY, [0, 1000], [0, 300]);
-  const textOpacity = useTransform(scrollY, [0, 800], [1, 0]);
+  const backgroundY = useTransform(scrollY, (y: number) => y * 0.7);
+  const textY = useTransform(scrollY, (y: number) => y * 0.5);
+  const cardsY = useTransform(scrollY, (y: number) => y * 0.1);
+  const textOpacity = useTransform(scrollY, [0, 500], [1, 0]);
 
   // Заменяем window.APP_CONFIG на переменные окружения Next.js
   const config = {
@@ -297,7 +108,7 @@ export default function App() {
       <PlanModal src={selectedPlan} onClose={() => setSelectedPlan(null)} />
 
       <header className="fixed top-0 w-full z-50 glass border-b border-neutral-100/20">
-        <nav className="flex justify-between items-center px-6 py-2 max-w-7xl mx-auto">
+        <nav className="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto">
           <div className="flex items-center gap-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.svg" alt="Silent Customs" className="h-10 w-auto" />
@@ -352,9 +163,9 @@ export default function App() {
       </header>
 
       <main className="flex-grow">
-        <section className="relative h-[870px] flex items-center justify-start px-6 md:px-12 overflow-hidden">
+        <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 overflow-hidden pt-24 pb-24 md:pb-34" id="about">
           <motion.div 
-            className="absolute -top-[20%] left-0 w-full h-[140%] z-0"
+            className="absolute inset-0 w-full h-full z-0"
             style={{ y: backgroundY }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -366,7 +177,7 @@ export default function App() {
             <div className="absolute inset-0 bg-black/30"></div>
           </motion.div>
           
-          <div className="relative z-10 max-w-7xl mx-auto w-full">
+          <div className="relative z-10 max-w-7xl mx-auto w-full flex-grow flex flex-col justify-center">
             <motion.div style={{ y: textY, opacity: textOpacity }}>
               <motion.div 
                 initial={{ opacity: 0, x: -50 }}
@@ -389,15 +200,18 @@ export default function App() {
               </motion.div>
             </motion.div>
           </div>
-        </section>
 
-        <section className="py-24 px-6 md:px-12 bg-surface" id="about">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard value="140-180 мм" label="Ход подвески" index={0} />
-            <StatCard value="29&quot; / 27.5&quot;" label="Размер колес" index={1} />
-            <StatCard value="Alu / Carbon" label="Материалы" index={2} />
-            <StatCard value="Lifetime" label="Гарантия на раму" index={3} />
-          </div>
+          <motion.div 
+            className="relative z-10 max-w-7xl mx-auto w-full mt-8"
+            style={{ y: cardsY }}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <StatCard value="140-180 мм" label="Ход подвески" index={0} />
+              <StatCard value="29&quot; / 27.5&quot;" label="Размер колес" index={1} />
+              <StatCard value="Alu / Carbon" label="Материалы" index={2} />
+              <StatCard value="Lifetime" label="Гарантия на раму" index={3} />
+            </div>
+          </motion.div>
         </section>
 
         <section className="py-24 px-6 md:px-12 bg-white" id="infrastructure">
